@@ -33,13 +33,10 @@
     _normalImageArray=[NSArray  arrayWithObjects:@"normalImage1.png",@"normalImage2",@"normalImage3",@"normalImage4", nil];
     _selectImagerray=[NSArray  arrayWithObjects:@"selectImage1.png",@"selectImage2",@"selectImage3",@"selectImage4", nil];
     _tabbarTitleArray=[NSArray arrayWithObjects:@"药房",@"咨询",@"手环",@"个人", nil];
-    for (int i=0; i<_vcArray.count + 1; i++) {
-        if (i != 2) {
-            RootViewController *tabbarVC=[[NSClassFromString(_vcArray[i>2 ? i-1 : i]) alloc]init];
-            UINavigationController * nvc=[[UINavigationController alloc]initWithRootViewController:tabbarVC];
-            [_vcTabbarArray addObject:nvc];
-        }
-
+    for (int i=0; i<_vcArray.count; i++) {
+        RootViewController *tabbarVC=[[NSClassFromString(_vcArray[i]) alloc]init];
+        UINavigationController * nvc=[[UINavigationController alloc]initWithRootViewController:tabbarVC];
+        [_vcTabbarArray addObject:nvc];
     }
     //    自定义控件  －   真实控件的功能＋假的UI
     _tabbar=[[UITabBarController alloc]init];
@@ -52,20 +49,7 @@
     
     [self.view addSubview:_tabbar.view];
 
-    //凸起按钮
-    UIButton *tuBtn = [UIButton buttonWithType:UIButtonTypeContactAdd];
-    tuBtn.frame = CGRectMake(0, 0, 80, 80);
-    tuBtn.layer.cornerRadius = 40;
-    tuBtn.backgroundColor = [UIColor orangeColor];
-    tuBtn.center = CGPointMake(self.view.bounds.size.width / 2, self.view.bounds.size.height - 40);
-    [tuBtn addTarget:self action:@selector(tuAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:tuBtn];
     
-}
-- (void)tuAction
-{
-    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Hellio" message:@"这是一个凸起按钮" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alertView show];
 }
 -(void)itemAction:(UIButton *)btn
 {
@@ -74,12 +58,17 @@
         if (![view isKindOfClass:[UILabel class]]) {
             UIImageView * imageView=(UIImageView *)[view.subviews objectAtIndex:0];
             UILabel * label=(UILabel *)[view.subviews objectAtIndex:1];
+//            NSLog(@"imageView:%d",imageView.tag);
+//            NSLog(@"btn:%d",btn.tag);
+            
             if (imageView.tag==btn.tag) {
+//                view.backgroundColor=[UIColor grayColor];
                 imageView.image=[UIImage imageNamed:_selectImagerray[btn.tag]];
                 label.textColor=[UIColor colorWithRed:0.00f green:0.76f blue:0.83f alpha:1.00f];
             }
             else
             {
+//                view.backgroundColor=[UIColor clearColor];
                 imageView.image=[UIImage imageNamed:_normalImageArray[imageView.tag]];
                 label.textColor=[UIColor whiteColor];
             }
